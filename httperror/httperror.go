@@ -3,16 +3,38 @@ package httperror
 import http "net/http"
 import goerror "github.com/prasannavl/goerror"
 
-func NewHttp(code int, message string, isFatal bool) goerror.CodedError {
-	return goerror.NewCoded(ErrorCode(code), message, isFatal)
+type HttpError interface {
+	goerror.CodedError
+	Stop() bool
 }
 
-func NewHttpEx(code int, message string, cause error, isFatal bool) goerror.CodedError {
-	return goerror.NewCodedEx(ErrorCode(code), message, cause, isFatal)
+func NewHttp(code int, message string, stop bool) HttpError {
+	return &HttpErr{goerror.CodedErr{goerror.Err{&message, nil}, ErrorCode(code)}, stop}
 }
 
-func HttpFrom(code int, err error, isFatal bool) goerror.CodedError {
-	return goerror.CodedFrom(ErrorCode(code), err, isFatal)
+func NewHttpEx(code int, message string, cause error, stop bool) HttpError {
+	return &HttpErr{goerror.CodedErr{goerror.Err{&message, cause}, ErrorCode(code)}, stop}
+}
+
+func HttpFrom(code int, err error, stop bool) HttpError {
+	if err == nil {
+		return nil
+	}
+	code = ErrorCode(code)
+	if gerr, ok := err.(HttpError); ok &&
+		code == gerr.Code() && stop == gerr.Stop() {
+		return gerr
+	}
+	return &HttpErr{goerror.CodedErr{goerror.Err{nil, err}, code}, stop}
+}
+
+type HttpErr struct {
+	goerror.CodedErr
+	ShouldStop bool
+}
+
+func (h *HttpErr) Stop() bool {
+	return h.ShouldStop
 }
 
 func StatusCode(code int) int {
