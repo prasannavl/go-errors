@@ -12,10 +12,16 @@ Provides 3 concrete types
 - `CodedErr`
 - `ErrGroup`
 
-## Subpackages
+## Install
+
+`go get github.com/prasannavl/goerror`
+
+## Sub-packages
 
 - `httperror` - Provides `HttpError` interface and `HttpErr` type
 - `utils` - Provides a set of helpers to ease iteration, and message aggregation
+
+## Types
 
 ### Error
 
@@ -29,7 +35,7 @@ Provides 3 concrete types
 
 `ErrGroup` provides a clean way to aggregate errors as `[]error`. But unlike other libraries out there - doesn't provides any way to add, combine, or remove errors. It prefers to sticks to Go's idiomatic way of keeping things minimalistic. You can use a Go's own `make`, `append` and other slice function to do the same. Once done, you simply use `GroupFrom` to add your slice to create a group. It's all just slices. The only thing `ErrGroup` does is provides you an `error` interface that by default prints a nice message, and a way to retrive all the original errors.
 
-### Notes
+## Notes
 
 `HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
 
