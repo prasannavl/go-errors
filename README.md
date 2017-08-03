@@ -38,6 +38,82 @@ Provides 3 concrete types
 
 `ErrGroup` provides a clean way to aggregate errors as `[]error`. But unlike other libraries out there - doesn't provides any way to add, combine, or remove errors. It prefers to sticks to Go's idiomatic way of keeping things minimalistic. You can use a Go's own `make`, `append` and other slice function to do the same. Once done, you simply use `GroupFrom` to add your slice to create a group. It's all just slices. The only thing `ErrGroup` does is provides you an `error` interface that by default prints a nice message, and a way to retrive all the original errors.
 
+## Example
+
+```go
+
+func TestErrors() {
+    // New errors
+
+    err := goerror.New("some error")
+    // Error with codes
+    codedErr := goerror.NewCoded(42, "compute overwhelmed. crashing")
+    // HttpErrors are essentially, coded errors,
+    // with http code validation
+    httpErr := httperror.New(400, "naughty you! that's not valid", true)
+
+    // Wrap existing existing errors
+    wrapped1 := goerror.From(errors.New("some other error"))
+    wrapped2 := goerror.From(wrapped1)
+    wrapper3 := goerror.From("wrapped as different msg", wrapped2)
+
+    // Intuitively messages:
+    fmt.Println(wrapped1)
+    // Output 
+    // some other error
+
+    // Same output
+    fmt.Println(wrapped2)
+    // Output
+    // some other error
+
+    fmt.Println(wrapped3)
+    // Output
+    // wrapped as different msg
+
+    // You can get the real err by accessing `Cause`. Or more intuitively,
+    // Collect from messages
+
+    msgs := errutils.CollectMsg(wrapped3, nil)
+    // msg has [ 'wrapped as different msg', 'some other error' ]
+
+    // Error group
+    errs := []error { err, codedErr, httpErr, wrapped1, wrapped2}
+    errGroup := goerror.GroupFrom(errs)
+
+    // Let's make things interesting
+    fmt.Println(errGroup)
+    // Output
+    // multiple errors:
+    // ...
+    // prints all of the given errors
+    // ...
+
+    // Or take control yourself
+    allErrs = errGroup.Errors()
+    msgs = errutils.CollectMsg(allErrs, nil)
+}
+```
+
+A real example in middleware using [`prasannavl/mchain`](https://www.github.com/prasannavl/mchain)
+
+```go
+func RequestIDMustInitHandler(next mchain.Handler) mchain.Handler {
+	f := func(w http.ResponseWriter, r *http.Request) error {
+		c := FromRequest(r)
+		if _, ok := r.Header[RequestIDHeaderKey]; ok {
+			msg := fmt.Sprintf("error: illegal header (%s)", RequestIDHeaderKey)
+			return httperror.New(400, msg, true)
+		}
+		var uid uuid.UUID
+		mustNewUUID(&uid)
+		c.RequestID = uid
+		return next.ServeHTTP(w, r)
+	}
+	return mchain.HandlerFunc(f)
+}
+```
+
 ## Notes
 
 `HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
