@@ -2,15 +2,8 @@
 
 A super tiny package for error encapsulation in idiomatic Go.
 
-Provides 3 interfaces
-- `Error`
-- `CodedError`
-- `ErrorGroup`
-
-Provides 3 concrete types
-- `Err`
-- `CodedErr`
-- `ErrGroup`
+**Godoc:** https://godoc.org/github.com/prasannavl/goerror  
+PS: `Read the source, Luke` - it's tiny.
 
 ## Install
 
@@ -22,6 +15,16 @@ Provides 3 concrete types
 - `utils` - Provides a set of helpers to ease iteration, and message aggregation
 
 ## Types
+
+Provides 3 interfaces
+- `Error`
+- `CodedError`
+- `ErrorGroup`
+
+Provides 3 concrete types
+- `Err`
+- `CodedErr`
+- `ErrGroup`
 
 ### Error
 
