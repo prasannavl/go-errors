@@ -8,15 +8,15 @@ type HttpError interface {
 	Stop() bool
 }
 
-func NewHttp(code int, message string, stop bool) HttpError {
+func New(code int, message string, stop bool) HttpError {
 	return &HttpErr{goerror.CodedErr{goerror.Err{&message, nil}, ErrorCode(code)}, stop}
 }
 
-func NewHttpEx(code int, message string, cause error, stop bool) HttpError {
+func NewEx(code int, message string, cause error, stop bool) HttpError {
 	return &HttpErr{goerror.CodedErr{goerror.Err{&message, cause}, ErrorCode(code)}, stop}
 }
 
-func HttpFrom(code int, err error, stop bool) HttpError {
+func From(code int, err error, stop bool) HttpError {
 	if err == nil {
 		return nil
 	}
