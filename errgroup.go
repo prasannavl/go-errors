@@ -24,7 +24,7 @@ func GroupFrom(errors []error) ErrorGroup {
 	return &ErrGroup{errs, &prefix, &sep, nil}
 }
 
-func GroupFromEx(errors []error, prefix string, suffix string, sep string) ErrorGroup {
+func NewGroup(errors []error, prefix string, suffix string, sep string) ErrorGroup {
 	errs := ValidErrors(errors)
 	if errs == nil {
 		return nil
