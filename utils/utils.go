@@ -43,14 +43,14 @@ func MakeMsgIterator(err error) func() *string {
 	}
 }
 
-func CollectMsg(err error) []string {
+func CollectMsg(err error, dest []string) []string {
 	if err == nil {
 		return nil
 	}
-	s := make([]string, 0, 2)
+	s := dest
 	e := err
 	for {
-		if goerr, ok := err.(goerror.Error); ok {
+		if goerr, ok := e.(goerror.Error); ok {
 			if goerr.IsSource() {
 				s = append(s, goerr.Error())
 			}
@@ -62,6 +62,20 @@ func CollectMsg(err error) []string {
 		}
 		s = append(s, e.Error())
 		break
+	}
+	return s
+}
+
+func CollectMsgAll(errs []error, dest []string) []string {
+	if len(errs) < 1 {
+		return nil
+	}
+	s := dest
+	for _, err := range errs {
+		m := CollectMsg(err, dest)
+		if m != nil {
+			s = append(s, m...)
+		}
 	}
 	return s
 }
