@@ -43,5 +43,3 @@ Provides 3 concrete types
 `HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
 
 Combining `Error` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
-
-**Where's the documentation?** - Read the source, Luke - it's tiny.
