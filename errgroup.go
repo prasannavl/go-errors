@@ -14,6 +14,14 @@ const (
 	ErrGroupDefaultSeparator = "\r\n"
 )
 
+func NewGroup(errors []error, prefix string, suffix string, sep string) ErrorGroup {
+	errs := ValidErrors(errors)
+	if errs == nil {
+		return nil
+	}
+	return &ErrGroup{errs, &prefix, &sep, &suffix}
+}
+
 func GroupFrom(errors []error) ErrorGroup {
 	prefix := ErrGroupDefaultPrefix
 	sep := ErrGroupDefaultSeparator
@@ -22,14 +30,6 @@ func GroupFrom(errors []error) ErrorGroup {
 		return nil
 	}
 	return &ErrGroup{errs, &prefix, &sep, nil}
-}
-
-func NewGroup(errors []error, prefix string, suffix string, sep string) ErrorGroup {
-	errs := ValidErrors(errors)
-	if errs == nil {
-		return nil
-	}
-	return &ErrGroup{errs, &prefix, &sep, &suffix}
 }
 
 type ErrGroup struct {
