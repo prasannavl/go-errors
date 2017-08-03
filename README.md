@@ -5,9 +5,9 @@ A super tiny package for error encapsulation in idiomatic Go.
 **Godoc:** https://godoc.org/github.com/prasannavl/goerror  
 PS: `Read the source, Luke` - it's tiny.
 
-## Install
+## Get
 
-`go get github.com/prasannavl/goerror`
+`go get -u github.com/prasannavl/goerror`
 
 ## Sub-packages
 
