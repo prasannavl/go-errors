@@ -10,7 +10,7 @@ func New(message string) Error {
 	return &Err{&message, nil}
 }
 
-func NewEx(message string, cause error) Error {
+func NewWithCause(message string, cause error) Error {
 	return &Err{&message, cause}
 }
 

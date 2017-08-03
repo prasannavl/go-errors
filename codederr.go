@@ -9,7 +9,7 @@ func NewCoded(code int, message string) CodedError {
 	return &CodedErr{Err{&message, nil}, code}
 }
 
-func NewCodedEx(code int, message string, cause error) CodedError {
+func NewCodedWithCause(code int, message string, cause error) CodedError {
 	return &CodedErr{Err{&message, cause}, code}
 }
 
