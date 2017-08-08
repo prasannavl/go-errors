@@ -1,6 +1,7 @@
 # goerror
 
-A super tiny package for error encapsulation in idiomatic Go.
+A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).
+(See below for comparison to `pkg/errors`)
 
 **Godoc:** https://godoc.org/github.com/prasannavl/goerror  
 PS: `Read the source, Luke` - it's tiny.
@@ -119,3 +120,17 @@ func RequestIDMustInitHandler(next mchain.Handler) mchain.Handler {
 `HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
 
 Combining `Error` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
+
+## pkg/errors
+
+Some of the features provided by this package are very similar to what the package `pkg/errors` offers. So, why do another error package?
+
+- `pkg/errors` has a very nice and simple way to chain errors with `Cause`. However, other than that I tend to disagree with the pattern the pkg/errors package tends to build on. In a language with exceptions, stack traces are critical - and so even though it's very expensive to take them - we try to get it where-ever we can. But Go takes a drastically different approach towards error handling. It's very simple. You just pass a simple structure around. And as such, is very lightweight. And it's very clean because, in order to identify where an error originated from, you can create errors that are unique with codes (which is the one of the purpose of error codes in the first place, beyond internal handling of error such as comparisons). But `pkg/errors` destroys this "lightness" by calling `runtime.Callers` everytime you create an error. `It is very expensive to create a new error or wrap one in pkg/errors`. In Go, stack traces need to be only taken during `panic`s, or when you explicitly need them. I find taking stack traces along with errors to be harmful, and not idiomatic go.
+
+    This package solves the problems that `pkg/errors` try to solve, and a lot more - by ErrorGroups, CodedError and utils, all while still retaining more simplicity than `pkg/errors`.
+
+Other than this, `goerror` also provides a more complete error encapsulation solution:
+
+- It provides `CodedError` pattern by out of the box - which is what a lot of usage requires rather than stack traces.
+- Defines a neat way to group errors with `GroupError`.
+- It also provides `httperror` that's built over `CodedError`, out of the box but as separate package.
