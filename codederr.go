@@ -13,7 +13,7 @@ func NewCodedWithCause(code int, message string, cause error) CodedError {
 	return &CodedErr{Err{&message, cause}, code}
 }
 
-func CodedFrom(code int, err error) CodedError {
+func CodedFrom(err error, code int) CodedError {
 	if err == nil {
 		return nil
 	}

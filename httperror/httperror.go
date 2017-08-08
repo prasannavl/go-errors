@@ -16,7 +16,7 @@ func NewWithCause(code int, message string, cause error, stop bool) HttpError {
 	return &HttpErr{goerror.CodedErr{goerror.Err{&message, cause}, ErrorCode(code)}, stop}
 }
 
-func From(code int, err error, stop bool) HttpError {
+func From(err error, code int, stop bool) HttpError {
 	if err == nil {
 		return nil
 	}

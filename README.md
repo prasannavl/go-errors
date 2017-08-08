@@ -56,7 +56,8 @@ func TestErrors() {
     // Wrap existing existing errors
     wrapped1 := goerror.From(errors.New("some other error"))
     wrapped2 := goerror.From(wrapped1)
-    wrapper3 := goerror.From("wrapped as different msg", wrapped2)
+    // With additional message
+    wrapper3 := goerror.NewWithCause("wrapped as different msg", wrapped2)
 
     // Intuitively messages:
     fmt.Println(wrapped1)
