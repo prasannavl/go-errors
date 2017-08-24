@@ -16,8 +16,8 @@ func TestIterator(t *testing.T) {
 	errs := []goerror.Error{
 		goerror.New(generalMsg),
 		goerror.From(errors.New(innerMsg)),
-		goerror.NewEx(wrapperMsg, nil),
-		goerror.NewEx(wrapperMsg, errors.New(innerMsg)),
+		goerror.New(wrapperMsg),
+		goerror.NewWithCause(wrapperMsg, errors.New(innerMsg)),
 	}
 
 	res := make([]string, 0, len(errs))
@@ -59,8 +59,8 @@ func TestCollectMsg(t *testing.T) {
 	errs := []error{
 		goerror.New(generalMsg),
 		goerror.From(errors.New(innerMsg)),
-		goerror.NewEx(wrapperMsg, nil),
-		goerror.NewEx(wrapperMsg, errors.New(innerMsg)),
+		goerror.New(wrapperMsg),
+		goerror.NewWithCause(wrapperMsg, errors.New(innerMsg)),
 	}
 
 	res := utils.CollectMsg(errs[0], nil)
