@@ -2,11 +2,19 @@ package errutils
 
 import goerror "github.com/prasannavl/goerror"
 
+const DefaultIteratorLimit = 100
+
 type ErrIterator struct {
-	err error
+	err   error
+	limit int
+	c     int
 }
 
 func (iter *ErrIterator) Next() error {
+	if iter.c >= iter.limit {
+		return nil
+	}
+	iter.c++
 	eLast := iter.err
 	if goerr, ok := iter.err.(goerror.Error); ok {
 		iter.err = goerr.Cause()
@@ -17,7 +25,11 @@ func (iter *ErrIterator) Next() error {
 }
 
 func MakeIterator(err error) ErrIterator {
-	return ErrIterator{err}
+	return ErrIterator{err, DefaultIteratorLimit, 0}
+}
+
+func MakeIteratorLimited(err error, limit int) ErrIterator {
+	return ErrIterator{err, limit, 0}
 }
 
 type ErrMsgIterator struct {
@@ -37,6 +49,14 @@ func (iter *ErrMsgIterator) Next() *string {
 	}
 }
 
+func MakeMsgIterator(err error) ErrMsgIterator {
+	return ErrMsgIterator{MakeIterator(err)}
+}
+
+func MakeMsgIteratorLimited(err error, limit int) ErrMsgIterator {
+	return ErrMsgIterator{MakeIteratorLimited(err, limit)}
+}
+
 func HasMessage(err error) bool {
 	if err == nil {
 		return false
@@ -45,10 +65,6 @@ func HasMessage(err error) bool {
 		return goerr.IsSource()
 	}
 	return true
-}
-
-func MakeMsgIterator(err error) ErrMsgIterator {
-	return ErrMsgIterator{MakeIterator(err)}
 }
 
 func CollectMsgInto(err error, dest []string) []string {
