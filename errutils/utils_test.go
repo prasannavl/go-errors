@@ -1,11 +1,11 @@
-package utils_test
+package errutils_test
 
 import (
 	"errors"
 	"testing"
 
 	"github.com/prasannavl/goerror"
-	"github.com/prasannavl/goerror/utils"
+	"github.com/prasannavl/goerror/errutils"
 )
 
 func TestIterator(t *testing.T) {
@@ -23,13 +23,13 @@ func TestIterator(t *testing.T) {
 	res := make([]string, 0, len(errs))
 
 	for _, err := range errs {
-		iter := utils.MakeIterator(err)
+		iter := errutils.MakeIterator(err)
 		for {
 			e := iter()
 			if e == nil {
 				break
 			}
-			if utils.HasMessage(e) {
+			if errutils.HasMessage(e) {
 				res = append(res, e.Error())
 			}
 		}
@@ -63,12 +63,12 @@ func TestCollectMsg(t *testing.T) {
 		goerror.NewWithCause(wrapperMsg, errors.New(innerMsg)),
 	}
 
-	res := utils.CollectMsg(errs[0], nil)
+	res := errutils.CollectMsg(errs[0], nil)
 	if res[0] != generalMsg {
 		t.Fatalf("CollectMsg failed, expected %q got: %q", generalMsg, res)
 	}
 
-	res = utils.CollectMsgAll(errs, nil)
+	res = errutils.CollectMsgAll(errs, nil)
 
 	expected := []string{
 		generalMsg,

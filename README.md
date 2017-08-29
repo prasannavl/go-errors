@@ -13,7 +13,7 @@ PS: `Read the source, Luke` - it's tiny.
 ## Sub-packages
 
 - `httperror` - Provides `HttpError` interface and `HttpErr` type
-- `utils` - Provides a set of helpers to ease iteration, and message aggregation
+- `errutils` - Provides a set of helpers to ease iteration, and message aggregation
 
 ## Types
 

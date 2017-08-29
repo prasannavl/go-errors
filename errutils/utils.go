@@ -1,4 +1,4 @@
-package utils
+package errutils
 
 import goerror "github.com/prasannavl/goerror"
 
