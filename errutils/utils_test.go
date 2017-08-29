@@ -25,7 +25,7 @@ func TestIterator(t *testing.T) {
 	for _, err := range errs {
 		iter := errutils.MakeIterator(err)
 		for {
-			e := iter()
+			e := iter.Next()
 			if e == nil {
 				break
 			}
@@ -63,12 +63,12 @@ func TestCollectMsg(t *testing.T) {
 		goerror.NewWithCause(wrapperMsg, errors.New(innerMsg)),
 	}
 
-	res := errutils.CollectMsg(errs[0], nil)
+	res := errutils.CollectMsg(errs[0])
 	if res[0] != generalMsg {
 		t.Fatalf("CollectMsg failed, expected %q got: %q", generalMsg, res)
 	}
 
-	res = errutils.CollectMsgAll(errs, nil)
+	res = errutils.CollectAllMsg(errs)
 
 	expected := []string{
 		generalMsg,

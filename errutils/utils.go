@@ -2,17 +2,37 @@ package errutils
 
 import goerror "github.com/prasannavl/goerror"
 
-func MakeIterator(err error) func() error {
-	e := err
-	return func() error {
-		for {
-			eLast := e
-			if goerr, ok := e.(goerror.Error); ok {
-				e = goerr.Cause()
-				return eLast
-			}
-			e = nil
-			return eLast
+type ErrIterator struct {
+	err error
+}
+
+func (iter *ErrIterator) Next() error {
+	eLast := iter.err
+	if goerr, ok := iter.err.(goerror.Error); ok {
+		iter.err = goerr.Cause()
+		return eLast
+	}
+	iter.err = nil
+	return eLast
+}
+
+func MakeIterator(err error) ErrIterator {
+	return ErrIterator{err}
+}
+
+type ErrMsgIterator struct {
+	errIter ErrIterator
+}
+
+func (iter *ErrMsgIterator) Next() *string {
+	for {
+		e := iter.errIter.Next()
+		if e == nil {
+			return nil
+		}
+		if HasMessage(e) {
+			m := e.Error()
+			return &m
 		}
 	}
 }
@@ -27,23 +47,11 @@ func HasMessage(err error) bool {
 	return true
 }
 
-func MakeMsgIterator(err error) func() *string {
-	iter := MakeIterator(err)
-	return func() *string {
-		for {
-			e := iter()
-			if e == nil {
-				return nil
-			}
-			if HasMessage(e) {
-				errStr := e.Error()
-				return &errStr
-			}
-		}
-	}
+func MakeMsgIterator(err error) ErrMsgIterator {
+	return ErrMsgIterator{MakeIterator(err)}
 }
 
-func CollectMsg(err error, dest []string) []string {
+func CollectMsgInto(err error, dest []string) []string {
 	if err == nil {
 		return nil
 	}
@@ -66,16 +74,24 @@ func CollectMsg(err error, dest []string) []string {
 	return s
 }
 
-func CollectMsgAll(errs []error, dest []string) []string {
+func CollectMsg(err error) []string {
+	return CollectMsgInto(err, nil)
+}
+
+func CollectAllMsgInto(errs []error, dest []string) []string {
 	if len(errs) < 1 {
 		return nil
 	}
 	s := dest
 	for _, err := range errs {
-		m := CollectMsg(err, dest)
+		m := CollectMsgInto(err, dest)
 		if m != nil {
 			s = append(s, m...)
 		}
 	}
 	return s
+}
+
+func CollectAllMsg(errs []error) []string {
+	return CollectAllMsgInto(errs, nil)
 }
