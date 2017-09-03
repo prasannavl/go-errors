@@ -9,11 +9,11 @@ type GoError interface {
 }
 
 func New(code int, message string, stop bool) GoError {
-	return &Err{goerror.CodedErr{goerror.Err{&message, nil}, ErrorCode(code)}, stop}
+	return &GoErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, stop}
 }
 
 func NewWithCause(code int, message string, cause error, stop bool) GoError {
-	return &Err{goerror.CodedErr{goerror.Err{&message, cause}, ErrorCode(code)}, stop}
+	return &GoErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, stop}
 }
 
 func From(err error, code int, stop bool) GoError {
@@ -25,15 +25,15 @@ func From(err error, code int, stop bool) GoError {
 		code == gerr.Code() && stop == gerr.Stop() {
 		return gerr
 	}
-	return &Err{goerror.CodedErr{goerror.Err{nil, err}, code}, stop}
+	return &GoErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, stop}
 }
 
-type Err struct {
+type GoErr struct {
 	goerror.CodedErr
 	ShouldStop bool
 }
 
-func (h *Err) Stop() bool {
+func (h *GoErr) Stop() bool {
 	return h.ShouldStop
 }
 

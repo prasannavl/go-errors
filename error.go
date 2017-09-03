@@ -7,11 +7,11 @@ type GoError interface {
 }
 
 func New(message string) GoError {
-	return &Err{&message, nil}
+	return &GoErr{&message, nil}
 }
 
 func NewWithCause(message string, cause error) GoError {
-	return &Err{&message, cause}
+	return &GoErr{&message, cause}
 }
 
 func From(err error) GoError {
@@ -21,15 +21,15 @@ func From(err error) GoError {
 	if gerr, ok := err.(GoError); ok {
 		return gerr
 	}
-	return &Err{nil, err}
+	return &GoErr{nil, err}
 }
 
-type Err struct {
+type GoErr struct {
 	Msg   *string
 	Inner error
 }
 
-func (e *Err) Error() string {
+func (e *GoErr) Error() string {
 	if e.Msg != nil {
 		return *e.Msg
 	}
@@ -40,10 +40,10 @@ func (e *Err) Error() string {
 	return "unknown error"
 }
 
-func (e *Err) IsSource() bool {
+func (e *GoErr) IsSource() bool {
 	return e.Msg != nil
 }
 
-func (e *Err) Cause() error {
+func (e *GoErr) Cause() error {
 	return e.Inner
 }

@@ -6,11 +6,11 @@ type CodedError interface {
 }
 
 func NewCoded(code int, message string) CodedError {
-	return &CodedErr{Err{&message, nil}, code}
+	return &CodedErr{GoErr{&message, nil}, code}
 }
 
 func NewCodedWithCause(code int, message string, cause error) CodedError {
-	return &CodedErr{Err{&message, cause}, code}
+	return &CodedErr{GoErr{&message, cause}, code}
 }
 
 func CodedFrom(err error, code int) CodedError {
@@ -20,11 +20,11 @@ func CodedFrom(err error, code int) CodedError {
 	if gerr, ok := err.(CodedError); ok && code == gerr.Code() {
 		return gerr
 	}
-	return &CodedErr{Err{nil, err}, code}
+	return &CodedErr{GoErr{nil, err}, code}
 }
 
 type CodedErr struct {
-	Err
+	GoErr
 	ErrCode int
 }
 

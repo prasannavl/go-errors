@@ -18,18 +18,20 @@ PS: `Read the source, Luke` - it's tiny.
 ## Types
 
 Provides 3 interfaces
-- `Error`
+- `GoError`
 - `CodedError`
 - `ErrorGroup`
 
 Provides 3 concrete types
-- `Err`
+- `GoErr`
 - `CodedErr`
 - `ErrGroup`
 
-### Error
+### GoError
 
-`Error` provides a straightforward way to wrap the `error` interface as `Cause`. The `utils` subpackage provides a way to iterate over chained errors and to collect error messages easily.
+`GoError` provides a straightforward way to wrap the `error` interface as `Cause`. The `utils` subpackage provides a way to iterate over chained errors and to collect error messages easily. 
+
+Note: It's unfortunate to have the `goerror.GoError` stutter in the name: This could have just been called `Error`, but that causes collision with the method name `Error` when embedded into another type, and Go's internal type hacks around this scenario by using a lowercase `error`, which cannot be exported when it's on packages. I find the stutter as acceptable rather than having a name that's isn't as informative, in this case.
 
 ### CodedError
 
@@ -120,7 +122,7 @@ func RequestIDMustInitHandler(next mchain.Handler) mchain.Handler {
 
 `HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
 
-Combining `Error` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
+Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
 
 ## pkg/errors
 
