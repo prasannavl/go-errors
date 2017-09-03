@@ -16,7 +16,7 @@ func (iter *ErrIterator) Next() error {
 	}
 	iter.c++
 	eLast := iter.err
-	if goerr, ok := iter.err.(goerror.Error); ok {
+	if goerr, ok := iter.err.(goerror.GoError); ok {
 		iter.err = goerr.Cause()
 		return eLast
 	}
@@ -61,7 +61,7 @@ func HasMessage(err error) bool {
 	if err == nil {
 		return false
 	}
-	if goerr, ok := err.(goerror.Error); ok {
+	if goerr, ok := err.(goerror.GoError); ok {
 		return goerr.IsSource()
 	}
 	return true
@@ -74,7 +74,7 @@ func CollectMsgInto(err error, dest []string) []string {
 	s := dest
 	e := err
 	for {
-		if goerr, ok := e.(goerror.Error); ok {
+		if goerr, ok := e.(goerror.GoError); ok {
 			if goerr.IsSource() {
 				s = append(s, goerr.Error())
 			}

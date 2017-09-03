@@ -13,7 +13,7 @@ func TestIterator(t *testing.T) {
 	innerMsg := "inner error"
 	wrapperMsg := "some wrapper error"
 
-	errs := []goerror.Error{
+	errs := []goerror.GoError{
 		goerror.New(generalMsg),
 		goerror.From(errors.New(innerMsg)),
 		goerror.New(wrapperMsg),
