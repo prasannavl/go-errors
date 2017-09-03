@@ -1,24 +1,24 @@
 package goerror
 
-type Error interface {
+type GoError interface {
 	error
 	Cause() error
 	IsSource() bool
 }
 
-func New(message string) Error {
+func New(message string) GoError {
 	return &Err{&message, nil}
 }
 
-func NewWithCause(message string, cause error) Error {
+func NewWithCause(message string, cause error) GoError {
 	return &Err{&message, cause}
 }
 
-func From(err error) Error {
+func From(err error) GoError {
 	if err == nil {
 		return nil
 	}
-	if gerr, ok := err.(Error); ok {
+	if gerr, ok := err.(GoError); ok {
 		return gerr
 	}
 	return &Err{nil, err}

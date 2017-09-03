@@ -3,25 +3,25 @@ package httperror
 import http "net/http"
 import goerror "github.com/prasannavl/goerror"
 
-type Error interface {
+type GoError interface {
 	goerror.CodedError
 	Stop() bool
 }
 
-func New(code int, message string, stop bool) Error {
+func New(code int, message string, stop bool) GoError {
 	return &Err{goerror.CodedErr{goerror.Err{&message, nil}, ErrorCode(code)}, stop}
 }
 
-func NewWithCause(code int, message string, cause error, stop bool) Error {
+func NewWithCause(code int, message string, cause error, stop bool) GoError {
 	return &Err{goerror.CodedErr{goerror.Err{&message, cause}, ErrorCode(code)}, stop}
 }
 
-func From(err error, code int, stop bool) Error {
+func From(err error, code int, stop bool) GoError {
 	if err == nil {
 		return nil
 	}
 	code = ErrorCode(code)
-	if gerr, ok := err.(Error); ok &&
+	if gerr, ok := err.(GoError); ok &&
 		code == gerr.Code() && stop == gerr.Stop() {
 		return gerr
 	}

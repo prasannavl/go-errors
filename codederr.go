@@ -1,7 +1,7 @@
 package goerror
 
 type CodedError interface {
-	Error
+	GoError
 	Code() int
 }
 
