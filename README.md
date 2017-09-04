@@ -120,7 +120,7 @@ func RequestIDMustInitHandler(next mchain.Handler) mchain.Handler {
 
 ## Notes
 
-`HttpError` provides one additional method `Stop` that's useful to signify any middleware chain to stop processing.
+`HttpError` provides one additional method `End` that's useful to signify any middleware chain to stop processing.
 
 Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
 
