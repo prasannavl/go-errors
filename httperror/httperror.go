@@ -8,24 +8,24 @@ type HttpError interface {
 	End() bool
 }
 
-func New(code int, message string, stop bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, stop}
+func New(code int, message string, end bool) HttpError {
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, end}
 }
 
-func NewWithCause(code int, message string, cause error, stop bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, stop}
+func NewWithCause(code int, message string, cause error, end bool) HttpError {
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, end}
 }
 
-func From(err error, code int, stop bool) HttpError {
+func From(err error, code int, end bool) HttpError {
 	if err == nil {
 		return nil
 	}
 	code = ErrorCode(code)
 	if gerr, ok := err.(HttpError); ok &&
-		code == gerr.Code() && stop == gerr.End() {
+		code == gerr.Code() && end == gerr.End() {
 		return gerr
 	}
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, stop}
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, end}
 }
 
 type HttpErr struct {
