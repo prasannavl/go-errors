@@ -3,7 +3,6 @@ package goerror
 type GoError interface {
 	error
 	Cause() error
-	IsSource() bool
 }
 
 func New(message string) GoError {
@@ -38,10 +37,6 @@ func (e *GoErr) Error() string {
 		return cause.Error()
 	}
 	return "unknown error"
-}
-
-func (e *GoErr) IsSource() bool {
-	return e.Msg != nil
 }
 
 func (e *GoErr) Cause() error {

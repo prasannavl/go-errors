@@ -5,7 +5,7 @@ import goerror "github.com/prasannavl/goerror"
 
 type HttpError interface {
 	goerror.CodedError
-	Stop() bool
+	End() bool
 }
 
 func New(code int, message string, stop bool) HttpError {
@@ -22,7 +22,7 @@ func From(err error, code int, stop bool) HttpError {
 	}
 	code = ErrorCode(code)
 	if gerr, ok := err.(HttpError); ok &&
-		code == gerr.Code() && stop == gerr.Stop() {
+		code == gerr.Code() && stop == gerr.End() {
 		return gerr
 	}
 	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, stop}
@@ -30,11 +30,11 @@ func From(err error, code int, stop bool) HttpError {
 
 type HttpErr struct {
 	goerror.CodedErr
-	ShouldStop bool
+	Stop bool
 }
 
-func (h *HttpErr) Stop() bool {
-	return h.ShouldStop
+func (h *HttpErr) End() bool {
+	return h.Stop
 }
 
 func StatusCode(code int) int {

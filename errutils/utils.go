@@ -61,8 +61,8 @@ func HasMessage(err error) bool {
 	if err == nil {
 		return false
 	}
-	if goerr, ok := err.(goerror.GoError); ok {
-		return goerr.IsSource()
+	if goerr, ok := err.(*goerror.GoErr); ok {
+		return goerr.Msg != nil
 	}
 	return true
 }
@@ -75,7 +75,7 @@ func CollectMsgInto(err error, dest []string) []string {
 	e := err
 	for {
 		if goerr, ok := e.(goerror.GoError); ok {
-			if goerr.IsSource() {
+			if HasMessage(goerr) {
 				s = append(s, goerr.Error())
 			}
 			e = goerr.Cause()
