@@ -10,11 +10,11 @@ type HttpError interface {
 }
 
 func New(code int, message string, end bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, nil, end}
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, end, nil}
 }
 
 func NewWithCause(code int, message string, cause error, end bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, nil, end}
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, end, nil}
 }
 
 func From(err error, code int, end bool) HttpError {
@@ -26,13 +26,13 @@ func From(err error, code int, end bool) HttpError {
 		code == gerr.Code() && end == gerr.End() {
 		return gerr
 	}
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, nil, end}
+	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, end, nil}
 }
 
 type HttpErr struct {
 	goerror.CodedErr
-	HeadersMap http.Header
 	Stop       bool
+	HeadersMap http.Header
 }
 
 func (h *HttpErr) Headers() http.Header {
