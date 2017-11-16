@@ -3,8 +3,7 @@
 A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
 (See below for comparison to `pkg/errors`)
 
-**Godoc:** https://godoc.org/github.com/prasannavl/goerror  
-PS: `Read the source, Luke` - it's tiny.
+**Documentation:** `Read the source, Luke` - it's tiny.
 
 ## Get
 
@@ -118,17 +117,11 @@ func RequestIDMustInitHandler(next mchain.Handler) mchain.Handler {
 }
 ```
 
-## Notes
-
-`HttpError` provides one additional method `End` that's useful to signify any middleware chain to stop processing.
-
-Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
-
 ## pkg/errors
 
 Some of the features provided by this package are very similar to what the package `pkg/errors` offers. So, why do another error package?
 
-- `pkg/errors` has a very nice and simple way to chain errors with `Cause`. However, other than that I tend to disagree with the pattern the pkg/errors package tends to build on. In a language with exceptions, stack traces are critical - and so even though it's very expensive to take them - we try to get it where-ever we can. But Go takes a drastically different approach towards error handling. It's very simple. You just pass a simple structure around. And as such, is very lightweight. And it's very clean because, in order to identify where an error originated from, you can create errors that are unique with codes (which is the one of the purpose of error codes in the first place, beyond internal handling of error such as comparisons). But `pkg/errors` destroys this "lightness" by calling `runtime.Callers` everytime you create an error. `It is very expensive to create a new error or wrap one in pkg/errors`. In Go, stack traces need to be only taken during `panic`s, or when you explicitly need them. I find taking stack traces along with errors to be harmful, and not idiomatic go.
+- `pkg/errors` has a very nice and simple way to chain errors with `Cause`. However, other than that I tend to disagree with the pattern the pkg/errors package tends to build on. **In a language with exceptions, stack traces are critical - and so even though it's very expensive to take them - we try to get it where-ever we can. But Go takes a drastically different approach towards error handling. It's very simple.** You just pass a simple structure around. And as such, is very lightweight. And it's very clean because, in order to identify where an error originated from, you can create errors that are unique with codes (which is the one of the purpose of error codes in the first place, beyond internal handling of error such as comparisons). But `pkg/errors` destroys this "lightness" by calling `runtime.Callers` everytime you create an error. `It is very expensive to create a new error or wrap one in pkg/errors`. In Go, stack traces need to be only taken during `panic`s, or when you explicitly need them. I find taking stack traces along with errors to be harmful, and not idiomatic go.
 
     This package solves the problems that `pkg/errors` try to solve, and a lot more - by ErrorGroups, CodedError and utils, all while still retaining more simplicity than `pkg/errors`.
 
@@ -138,7 +131,28 @@ Other than this, `goerror` also provides a more complete error encapsulation sol
 - Defines a neat way to group errors with `GroupError`.
 - It also provides `httperror` that's built over `CodedError`, out of the box but as separate package.
 
-## I don't agree with this. Errors without stack-traces are just stupid! 
+## How is this more Go idiomatic?
 
-For some idea on the rationale, and why this is more idiomatic Go, please have a glance through: https://www.reddit.com/r/golang/comments/7dblu4/goerror_a_super_tiny_package_for_error/
+As mentioned, stack-traces absolutely essential when you work with language with execptions. Because they can throw from anywhere, and you can be `catch`ing it elsewhere - you're bound to lose track of where you are very quickly. However the approach Go takes is simple. You check your errors at every surface of an API. So, simple error type with kind can work very nicely. And that doesn't mean you can't or shoudln't take stack traces. You can always just wrap them in higher order functions. I've found it to be a better practice *to take traces at component or contextual boundaries, when needed.*
 
+**Simple composable errors with codes, should be the basic building block of error handling - while a package like `pkg/errors` that's intended to be a fundamental building block, unfortunately does expensive caller stacks, and is structured far more complex internally** 
+
+## I like stack-traces! 
+
+> Then take them! 
+
+It's just not intended to go into the building block. They should be above it. So you have exactly that choice. There **are times when stack traces are critical, and there are times when they are just a waste of system resources** - but the truth is, error handling helpers like these can never know that regardless of any number of debates or discussions - and so this package does the absolute minimum to act as a building block, yet provides nice composition. Rest can be built over it.
+
+## How is this simpler?
+
+Don't let the number of types fool you. Conceptually, it's all just in one file `errors.go`, which is about 40 lines long. (Yup, that's it). All it really does is just wrap things up neatly in a type, and allows you to compose them. If you're a reasonably proficient in Go, you should be able to read and understand the whole code of the library in just under 5 minutes - I encourage you to - *you should know exactly what happens* you instantiate an error type.
+
+## Drop-in replacement?
+
+This could be. The API is compatible, but the package name has to be changed to `errors`. Which I intend to, after letting it sit for a while longer. Meanwhile, I'd like to hear some feedback. 
+
+## Notes
+
+`HttpError` provides one additional method `End` that's useful to signify any middleware chain to stop processing.
+
+Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
