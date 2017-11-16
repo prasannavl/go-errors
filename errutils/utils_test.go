@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/prasannavl/goerror"
-	"github.com/prasannavl/goerror/errutils"
+	goerror "github.com/prasannavl/go-errors"
+	"github.com/prasannavl/go-errors/errutils"
 )
 
 func TestIterator(t *testing.T) {

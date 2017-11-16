@@ -1,4 +1,4 @@
-package goerror
+package errors
 
 type CodedError interface {
 	GoError

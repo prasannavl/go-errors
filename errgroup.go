@@ -1,4 +1,4 @@
-package goerror
+package errors
 
 import (
 	"bytes"
@@ -48,7 +48,7 @@ func (e *ErrGroup) Error() string {
 	// Reset l1 to -1 so that an explicit
 	// check can be avoided during the loop.
 	// This ensures e.MsgSeparator is never
-	// deferenced below when nil
+	// dereferenced below when nil
 	if e.MsgSeparator == nil {
 		l1 = -1
 	}

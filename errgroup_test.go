@@ -1,11 +1,11 @@
-package goerror_test
+package errors_test
 
 import (
 	"errors"
 	"fmt"
 	"testing"
 
-	"github.com/prasannavl/goerror"
+	goerror "github.com/prasannavl/go-errors"
 )
 
 func TestMultiError(t *testing.T) {

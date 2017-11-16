@@ -1,20 +1,20 @@
 package httperror
 
-import http "net/http"
-import goerror "github.com/prasannavl/goerror"
+import "net/http"
+import "github.com/prasannavl/go-errors"
 
 type HttpError interface {
-	goerror.CodedError
+	errors.CodedError
 	Headers() http.Header
 	End() bool
 }
 
 func New(code int, message string, end bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, nil}, ErrorCode(code)}, end, nil}
+	return &HttpErr{errors.CodedErr{errors.GoErr{&message, nil}, ErrorCode(code)}, end, nil}
 }
 
 func NewWithCause(code int, message string, cause error, end bool) HttpError {
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{&message, cause}, ErrorCode(code)}, end, nil}
+	return &HttpErr{errors.CodedErr{errors.GoErr{&message, cause}, ErrorCode(code)}, end, nil}
 }
 
 func From(err error, code int, end bool) HttpError {
@@ -32,11 +32,11 @@ func From(err error, code int, end bool) HttpError {
 		code == gerr.Code() && end == gerr.End() {
 		return gerr
 	}
-	return &HttpErr{goerror.CodedErr{goerror.GoErr{nil, err}, code}, end, nil}
+	return &HttpErr{errors.CodedErr{errors.GoErr{nil, err}, code}, end, nil}
 }
 
 type HttpErr struct {
-	goerror.CodedErr
+	errors.CodedErr
 	Stop       bool
 	HeadersMap http.Header
 }

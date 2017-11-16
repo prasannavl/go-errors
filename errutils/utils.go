@@ -1,6 +1,6 @@
 package errutils
 
-import goerror "github.com/prasannavl/goerror"
+import "github.com/prasannavl/go-errors"
 
 const DefaultIteratorLimit = 100
 
@@ -16,7 +16,7 @@ func (iter *ErrIterator) Next() error {
 	}
 	iter.c++
 	eLast := iter.err
-	if goerr, ok := iter.err.(goerror.GoError); ok {
+	if goerr, ok := iter.err.(errors.GoError); ok {
 		iter.err = goerr.Cause()
 		return eLast
 	}
@@ -61,7 +61,7 @@ func HasMessage(err error) bool {
 	if err == nil {
 		return false
 	}
-	if goerr, ok := err.(*goerror.GoErr); ok {
+	if goerr, ok := err.(*errors.GoErr); ok {
 		return goerr.Msg != nil
 	}
 	return true
@@ -74,7 +74,7 @@ func CollectMsgInto(err error, dest []string) []string {
 	s := dest
 	e := err
 	for {
-		if goerr, ok := e.(goerror.GoError); ok {
+		if goerr, ok := e.(errors.GoError); ok {
 			if HasMessage(goerr) {
 				s = append(s, goerr.Error())
 			}
