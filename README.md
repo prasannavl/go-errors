@@ -1,4 +1,4 @@
-# go-error
+# go-errors
 
 A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
 (See below for comparison to `pkg/errors`)
@@ -9,7 +9,7 @@ A super tiny package for error encapsulation in idiomatic Go. A better and light
 
 ## Get
 
-`go get -u github.com/prasannavl/go-error`
+`go get -u github.com/prasannavl/go-errors`
 
 ## Sub-packages
 
