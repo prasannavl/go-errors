@@ -1,7 +1,9 @@
-# goerror
+# go-error
 
 A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
 (See below for comparison to `pkg/errors`)
+
+> This package was previously called `goerror`. Now renamed to `errors` to be a drop-in replacement for std `errors` package.
 
 **Documentation:** `Read the source, Luke` - it's tiny.
 
@@ -28,9 +30,7 @@ Provides 3 concrete types
 
 ### GoError
 
-`GoError` provides a straightforward way to wrap the `error` interface as `Cause`. The `utils` subpackage provides a way to iterate over chained errors and to collect error messages easily. 
-
-Note: It's unfortunate to have the `goerror.GoError` stutter in the name: This could have just been called `Error`, but that causes collision with the method name `Error` when embedded into another type, and Go's internal type hacks around this scenario by using a lowercase `error`, which cannot be exported when it's on packages. I find the stutter as acceptable rather than having a name that's isn't as informative, in this case.
+`GoError` provides a straightforward way to wrap the `error` interface as `Cause`. The `utils` subpackage provides a way to iterate over chained errors and to collect error messages easily.
 
 ### CodedError
 
@@ -47,18 +47,18 @@ Note: It's unfortunate to have the `goerror.GoError` stutter in the name: This c
 func TestErrors() {
     // New errors
 
-    err := goerror.New("some error")
+    err := errors.New("some error")
     // Error with codes
-    codedErr := goerror.NewCoded(42, "compute overwhelmed. crashing")
+    codedErr := errors.NewCoded(42, "compute overwhelmed. crashing")
     // HttpErrors are essentially, coded errors,
     // with http code validation
     httpErr := httperror.New(400, "naughty you! that's not valid", true)
 
     // Wrap existing existing errors
-    wrapped1 := goerror.From(errors.New("some other error"))
-    wrapped2 := goerror.From(wrapped1)
+    wrapped1 := errors.From(errors.New("some other error"))
+    wrapped2 := errors.From(wrapped1)
     // With additional message
-    wrapper3 := goerror.NewWithCause("wrapped as different msg", wrapped2)
+    wrapper3 := errors.NewWithCause("wrapped as different msg", wrapped2)
 
     // Intuitively messages:
     fmt.Println(wrapped1)
@@ -82,7 +82,7 @@ func TestErrors() {
 
     // Error group
     errs := []error { err, codedErr, httpErr, wrapped1, wrapped2}
-    errGroup := goerror.GroupFrom(errs)
+    errGroup := errors.GroupFrom(errs)
 
     // Let's make things interesting
     fmt.Println(errGroup)
@@ -147,9 +147,9 @@ It's just not intended to go into the building block. They should be above it. S
 
 Don't let the number of types fool you. Conceptually, it's all just in one file `errors.go`, which is about 40 lines long. (Yup, that's it). All it really does is just wrap things up neatly in a type, and allows you to compose them. If you're a reasonably proficient in Go, you should be able to read and understand the whole code of the library in just under 5 minutes - I encourage you to - *you should know exactly what happens* you instantiate an error type.
 
-## Drop-in replacement?
+## Drop-in replacement for std `errors`?
 
-This could be. The API is compatible, but the package name has to be changed to `errors`. Which I intend to, after letting it sit for a while longer. Meanwhile, I'd like to hear some feedback. 
+Yup. It is!
 
 ## Notes
 
