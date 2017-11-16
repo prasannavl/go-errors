@@ -14,9 +14,15 @@ func NewWithCause(message string, cause error) GoError {
 }
 
 func From(err error) GoError {
+	// If nil, just return back a nil so that
+	// it can easily be composed without having
+	// to check for nil first
 	if err == nil {
 		return nil
 	}
+	// Avoid a potentially wasteful allocation,
+	// if it's already the same error with the
+	// same error props
 	if gerr, ok := err.(GoError); ok {
 		return gerr
 	}

@@ -18,10 +18,16 @@ func NewWithCause(code int, message string, cause error, end bool) HttpError {
 }
 
 func From(err error, code int, end bool) HttpError {
+	// If nil, just return back a nil so that
+	// it can easily be composed without having
+	// to check for nil first
 	if err == nil {
 		return nil
 	}
 	code = ErrorCode(code)
+	// Avoid a potentially wasteful allocation,
+	// if it's already the same error with the
+	// same error props
 	if gerr, ok := err.(HttpError); ok &&
 		code == gerr.Code() && end == gerr.End() {
 		return gerr

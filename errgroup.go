@@ -46,7 +46,9 @@ func (e *ErrGroup) Error() string {
 	}
 	l1 := len(e.Nodes) - 1
 	// Reset l1 to -1 so that an explicit
-	// check can be avoided during the loop
+	// check can be avoided during the loop.
+	// This ensures e.MsgSeparator is never
+	// deferenced below when nil
 	if e.MsgSeparator == nil {
 		l1 = -1
 	}
