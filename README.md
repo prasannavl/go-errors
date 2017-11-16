@@ -3,13 +3,13 @@
 A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
 (See below for comparison to `pkg/errors`)
 
-> This package was previously called `goerror`. Now renamed to `errors` to be a drop-in replacement for std `errors` package.
+> **Note:** This package was previously called `goerror`. Now renamed to `errors` to be a drop-in replacement for std `errors` package.
 
 **Documentation:** `Read the source, Luke` - it's tiny.
 
 ## Get
 
-`go get -u github.com/prasannavl/goerror`
+`go get -u github.com/prasannavl/go-error`
 
 ## Sub-packages
 
