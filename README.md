@@ -137,3 +137,8 @@ Other than this, `goerror` also provides a more complete error encapsulation sol
 - It provides `CodedError` pattern by out of the box - which is what a lot of usage requires rather than stack traces.
 - Defines a neat way to group errors with `GroupError`.
 - It also provides `httperror` that's built over `CodedError`, out of the box but as separate package.
+
+## I don't agree with this. Errors without stack-traces are just stupid! 
+
+For some idea on the rationale, and why this is more idiomatic Go, please have a glance through: https://www.reddit.com/r/golang/comments/7dblu4/goerror_a_super_tiny_package_for_error/
+
