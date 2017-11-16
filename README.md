@@ -1,6 +1,6 @@
 # go-errors
 
-A super tiny package for error encapsulation in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
+A super tiny package for error encapsulation and composition in idiomatic Go. A better and lighter alternative to [`pkg/errors`](https://github.com/pkg/errors).  
 (See below for comparison to `pkg/errors`)
 
 > **Note:** This package was previously called `goerror`. Now renamed to `errors` to be a drop-in replacement for std `errors` package.
