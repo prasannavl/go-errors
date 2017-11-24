@@ -135,7 +135,7 @@ Other than this, `goerror` also provides a more complete error encapsulation sol
 
 As mentioned, stack-traces are absolutely essential when you work with language with execptions. Because they can throw from anywhere, and you can be `catch`ing it elsewhere - you're bound to loose track of where you are very quickly. However the approach Go takes is simple. You check your errors at every surface of an API. So, simple error type with kind can work very nicely. And that doesn't mean you can't or shouldn't take stack traces. You can always just wrap them in higher order functions. I've found it to be a better practice *to take traces at component or contextual boundaries, when needed.*
 
-**Simple composable errors with codes, should be the basic building block of error handling - while a package like `pkg/errors` that's intended to be a fundamental building block, unfortunately does expensive caller stacks, and is structured far more complex internally** 
+**Simple composable errors with codes, should be the basic building block of error handling - while a package like `pkg/errors` that's intended to be a fundamental building block, unfortunately does caller stacks, is structured far more complex internally, and doesn't really help much with composition** 
 
 ## I like stack-traces! 
 
