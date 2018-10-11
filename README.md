@@ -156,3 +156,10 @@ Yup. It is!
 `HttpError` provides one additional method `End` that's useful to signify any middleware chain to stop processing.
 
 Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
+
+Say thanks!
+---
+
+If this project helped you save time, headaches, or push the boundaries of earth, I do appreciate a coffee as thanks! :smiley:. You may buy me one here, should you wish:
+
+[![PayPalDonate](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypal.me/prasannavl)
