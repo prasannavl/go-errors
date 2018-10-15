@@ -157,9 +157,26 @@ Yup. It is!
 
 Combining `GoError` and `ErrorGroup` should be sufficient to handle most complex error wrapping, merging scenarios in Go without the use of other packages that add too many whistles which are, in my opinion completely unnecessary - and frankly not idiomatic Go.
 
+License
+---
+
+This project is licensed under either of the following, at your choice:
+
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or [https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0))
+* GPL 3.0 license ([LICENSE-GPL](LICENSE-GPL) or [https://opensource.org/licenses/GPL-3.0](https://opensource.org/licenses/GPL-3.0))
+
+
 Say thanks!
 ---
 
 If this project helped you save time, headaches, or push the boundaries of earth, I do appreciate a coffee as thanks! :smiley:. You may buy me one here, should you wish:
 
-[![PayPalDonate](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypal.me/prasannavl)
+[![Donate-PayPal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypal.me/prasannavl)
+
+
+
+Code of Conduct
+---
+
+Contribution to the LiquidState project is organized under the terms of the Contributor Covenant, and as such the maintainer [@prasannavl](https://github.com/prasannavl) promises to intervene to uphold that code of conduct.
+
